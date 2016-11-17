@@ -18,9 +18,10 @@ import tempfile
 
 from oslo_log import log as oslo_logging
 
-from cloudbaseinit.plugins.common import fileexecutils
+# from cloudbaseinit.plugins.common import fileexecutils
+from cloudbaseinit.plugins.common import userdatautils
 from cloudbaseinit.plugins.common.userdataplugins import base
-from cloudbaseinit.utils import encoding
+# from cloudbaseinit.utils import encoding
 
 
 LOG = oslo_logging.getLogger(__name__)
@@ -32,16 +33,15 @@ class ShellScriptPlugin(base.BaseUserDataPlugin):
         super(ShellScriptPlugin, self).__init__("text/x-shellscript")
 
     def process(self, part):
-        file_name = part.get_filename()
-        target_path = os.path.join(tempfile.gettempdir(), file_name)
-
+        #file_name = part.get_filename()
+        #target_path = os.path.join(tempfile.gettempdir(), file_name)
         try:
-            encoding.write_file(target_path, part.get_payload())
-
-            return fileexecutils.exec_file(target_path)
+            #encoding.write_file(target_path, part.get_payload())
+            #return fileexecutils.exec_file(target_path)
+            return userdatautils.execute_user_data_script(part.get_payload().encode())
         except Exception as ex:
             LOG.warning('An error occurred during user_data execution: \'%s\''
                         % ex)
-        finally:
-            if os.path.exists(target_path):
-                os.remove(target_path)
+        # finally:
+        #     if os.path.exists(target_path):
+        #         os.remove(target_path)

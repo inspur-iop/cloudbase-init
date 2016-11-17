@@ -54,7 +54,8 @@ class UserDataPlugin(base.BasePlugin):
         plugin_status = base.PLUGIN_EXECUTION_DONE
         reboot = False
 
-        if user_data.startswith(b'Content-Type: multipart'):
+        # if user_data.startswith(b'Content-Type: multipart'):
+        if user_data.find(b'Content-Type: multipart') != -1:
             user_data_plugins = factory.load_plugins()
             user_handlers = {}
 
